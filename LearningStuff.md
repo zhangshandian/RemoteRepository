@@ -64,3 +64,36 @@
     </Set>  
   </New>  
 </Set>   --调用server的setHandler方法为当前的server设置handler属性，创建的handlercollection，包括三个实际的handler
+
+2018-09-03 dubbo配置文件的理解(使用到的)
+
+<dubbo:application>应用配置信息
+name 当前应用名称
+
+<dubbo:registry >注册中心配置，多个注册中心可以声明多个registry标签
+id:注册中心引用beanId,
+address:注册中心服务器地址，如果地址没有端口缺省为9090，同一集群内的多个地址用逗号分隔，不同集群的注册中心，请配置多个<dubbo:registry>标签
+protocol注册中心地址协议，支持dubbo,http,local三种
+port 注册中心缺省端口，当address没有带端口时使用此端口作为缺省值
+timeout:注册中心请求超时时间
+group 设置注册根节点
+
+<dubbo:provider> 服务提供者缺省配置
+<dubbo:service>服务提供者暴露服务配置 服务提供者暴露服务配置
+
+interface：必填，服务接口名
+ref:必填，服务对象实现引用
+version：服务版本，建议使用两位数版本，不是必填标签
+group：服务分组，当一个接口有多个实现，则可以用分组区分
+
+<dubbo:consumer> 服务消费者缺省配置
+<dubbo:reference> 服务消费者引用服务配置
+id 服务引用beanid 必填
+    interface 服务接口名，必填
+    version:服务版本，与服务提供者版本一致
+    group：服务分组
+    timeout:服务方法调用超时时间
+    retries:远程服务调用重试次数，不包括第一次调用
+服务提供者声明服务接口，服务实现，注册地址
+消费者声明引用的beanid 引用的服务接口，注册地址。
+
