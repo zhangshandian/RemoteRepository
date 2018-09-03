@@ -97,3 +97,22 @@ id 服务引用beanid 必填
 服务提供者声明服务接口，服务实现，注册地址
 消费者声明引用的beanid 引用的服务接口，注册地址。
 
+web.xml配置
+<context-param>
+<param-name>contextConfigLocation</param-name>
+<param-value>locationValue</param-value>
+</context-param>
+用来声明整个web应用范围内的上下初始化参数
+name-参数名称 必须唯一
+value-参数值 
+
+初始化过程：
+1.启动web项目时，容器会读web.xml配置文件中的两个节点<listener>和<context-param>
+2.然后容器创建一个ServletContext上下文对象，应用范围内整个web项目都使用这个上下文
+3.接着容器读取<context-param>转化为键值对交给ServletContext.
+4.容器创建<listener>中的类实例，即创建监听(listener定义的类可以是自定义的,但须继承ServletContextListener).
+5.在监听的类中会有一个contextInitialized(ServletContextEvent event)初始化方法，在这个方法中可以通过event.getServletContext().getInitParameter("contextConfigLocation") 来得到context-param 设定的值。在这个类中还必须有一个contextDestroyed(ServletContextEvent event) 销毁方法.用于关闭应用前释放资源，比如说数据库连接的关闭.
+6.得到context-param的值后，就可以做操作。注意,这个时候你的WEB项目还没有完全启动完成.这个动作会比所有的Servlet都要早。
+   
+   由上面的初始化过程可知容器对于web.xml的加载过程是context-param >> listener  >> fileter  >> servlet
+
